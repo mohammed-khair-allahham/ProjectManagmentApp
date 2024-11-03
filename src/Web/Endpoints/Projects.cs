@@ -14,27 +14,27 @@ public class Projects : EndpointGroupBase
     {
         app.MapGroup(this)
             .RequireAuthorization()
-            .MapGet(ListAsync)
-            .MapGet(GetAsync, "{id}")
-            .MapPost(CreateAsync)
-            .MapPut(UpdateAsync, "{id}")
-            .MapDelete(DeleteAsync, "{id}");
+            .MapGet(ProjectListAsync)
+            .MapGet(ProjectGetAsync, "{id}")
+            .MapPost(ProjectCreateAsync)
+            .MapPut(ProjectUpdateAsync, "{id}")
+            .MapDelete(ProjectDeleteAsync, "{id}");
 
     }
 
-    public async Task<ProjectDetailsDto> GetAsync(ISender sender, int id)
+    public async Task<ProjectDetailsDto> ProjectGetAsync(ISender sender, int id)
         => await sender.Send(new GetProjectDetailsQuery(id));
 
-    public async Task<PaginatedList<GetProjectListDto>> ListAsync(ISender sender, [AsParameters] GetProjectListWithPaginationQuery query)
+    public async Task<PaginatedList<GetProjectListDto>> ProjectListAsync(ISender sender, [AsParameters] GetProjectListWithPaginationQuery query)
         => await sender.Send(query);
 
-    public async Task<ProjectResponseDto> CreateAsync(ISender sender, CreateProjectCommand command)
+    public async Task<ProjectResponseDto> ProjectCreateAsync(ISender sender, CreateProjectCommand command)
         => await sender.Send(command);
 
-    public async Task<ProjectResponseDto> UpdateAsync(ISender sender, int id, UpdateProjectCommand command)
+    public async Task<ProjectResponseDto> ProjectUpdateAsync(ISender sender, int id, UpdateProjectCommand command)
         => await sender.Send(command);
 
-    public async Task<IResult> DeleteAsync(ISender sender, int id)
+    public async Task<IResult> ProjectDeleteAsync(ISender sender, int id)
     {
         await sender.Send(new DeleteProjectCommand(id));
         return Results.NoContent();

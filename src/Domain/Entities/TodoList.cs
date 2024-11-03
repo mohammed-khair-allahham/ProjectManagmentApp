@@ -1,6 +1,6 @@
 ﻿namespace ProjectManagmentApp.Domain.Entities;
 
-public class TodoList : BaseAuditableEntity
+public class TodoList : OldBaseAuditableEntity
 {
     public string? Title { get; set; }
 

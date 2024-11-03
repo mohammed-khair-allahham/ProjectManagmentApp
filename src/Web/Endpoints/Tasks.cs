@@ -14,28 +14,28 @@ public class Tasks : EndpointGroupBase
     {
         app.MapGroup(this)
             .RequireAuthorization()
-            .MapGet(ListAsync)
-            .MapGet(GetAsync, "{id}")
-            .MapPost(CreateAsync)
-            .MapPut(UpdateAsync, "{id}")
-            .MapPut(UpdateStatusAsync, "status/{id}")
+            .MapGet(TaskListAsync)
+            .MapGet(TaskGetAsync, "{id}")
+            .MapPost(TaskCreateAsync)
+            .MapPut(TaskUpdateAsync, "{id}")
+            .MapPut(TaskUpdateStatusAsync, "status/{id}")
             .MapDelete(DeleteAsync, "{id}");
 
     }
 
-    public async Task<TaskDetailsDto> GetAsync(ISender sender, int id)
+    public async Task<TaskDetailsDto> TaskGetAsync(ISender sender, int id)
         => await sender.Send(new GetTaskDetailsQuery(id));
 
-    public async Task<PaginatedList<GetTaskListDto>> ListAsync(ISender sender, [AsParameters] GetTaskListWithPaginationQuery query)
+    public async Task<PaginatedList<GetTaskListDto>> TaskListAsync(ISender sender, [AsParameters] GetTaskListWithPaginationQuery query)
         => await sender.Send(query);
 
-    public async Task<TaskResponseDto> CreateAsync(ISender sender, CreateTaskCommand command)
+    public async Task<TaskResponseDto> TaskCreateAsync(ISender sender, CreateTaskCommand command)
         => await sender.Send(command);
 
-    public async Task<TaskResponseDto> UpdateAsync(ISender sender, int id, UpdateTaskCommand command)
+    public async Task<TaskResponseDto> TaskUpdateAsync(ISender sender, int id, UpdateTaskCommand command)
         => await sender.Send(command);
 
-    public async Task<IResult> UpdateStatusAsync(ISender sender, int id, UpdateTaskStatusCommand command)
+    public async Task<IResult> TaskUpdateStatusAsync(ISender sender, int id, UpdateTaskStatusCommand command)
     {
         if (id != command.Id) return Results.BadRequest();
         await sender.Send(command);

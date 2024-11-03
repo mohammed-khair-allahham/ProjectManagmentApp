@@ -1,6 +1,6 @@
 ﻿namespace ProjectManagmentApp.Domain.Entities;
 
-public class TodoItem : BaseAuditableEntity
+public class TodoItem : OldBaseAuditableEntity
 {
     public int ListId { get; set; }
 
