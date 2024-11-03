@@ -1,9 +1,9 @@
 ﻿using ProjectManagmentApp.Application.Common.Interfaces;
 using ProjectManagmentApp.Application.Common.Mappings;
 using ProjectManagmentApp.Application.Common.Models;
-using ProjectManagmentApp.Application.TodoItems.Queries.GetTodoItemsWithPagination;
 
 namespace ProjectManagmentApp.Application.Projects.Queries.GetProjectList;
+
 
 public record GetProjectListWithPaginationQuery() : IRequest<PaginatedList<GetProjectListDto>>
 {

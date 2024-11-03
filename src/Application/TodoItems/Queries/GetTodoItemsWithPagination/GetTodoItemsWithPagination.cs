@@ -1,9 +1,13 @@
 ﻿using ProjectManagmentApp.Application.Common.Interfaces;
 using ProjectManagmentApp.Application.Common.Mappings;
 using ProjectManagmentApp.Application.Common.Models;
+using ProjectManagmentApp.Application.Common.Security;
+using ProjectManagmentApp.Domain.Constants;
 
 namespace ProjectManagmentApp.Application.TodoItems.Queries.GetTodoItemsWithPagination;
 
+[Authorize(Roles = $"{Roles.Administrator},{Roles.Manager}")]
+[Authorize(Policy = Policies.CanGet)]
 public record GetTodoItemsWithPaginationQuery : IRequest<PaginatedList<TodoItemBriefDto>>
 {
     public int ListId { get; init; }
