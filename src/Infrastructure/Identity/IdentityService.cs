@@ -29,6 +29,13 @@ public class IdentityService : IIdentityService
         return user?.UserName;
     }
 
+    public async Task<bool> ExistAsync(string? userId, CancellationToken cancellationToken = default)
+    {
+        var exist = await _userManager.Users.AnyAsync(u => u.Id == userId, cancellationToken);
+
+        return exist;
+    }
+
     public async Task<(Result Result, string UserId)> CreateUserAsync(string userName, string password)
     {
         var user = new ApplicationUser

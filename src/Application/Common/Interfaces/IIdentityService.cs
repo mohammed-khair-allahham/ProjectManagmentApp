@@ -6,6 +6,8 @@ public interface IIdentityService
 {
     Task<string?> GetUserNameAsync(string userId);
 
+    Task<bool> ExistAsync(string? userId, CancellationToken cancellationToken = default);
+
     Task<bool> IsInRoleAsync(string userId, string role);
 
     Task<bool> AuthorizeAsync(string userId, string policyName);
