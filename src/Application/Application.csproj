@@ -17,7 +17,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="ProjectTasks\Queries\" />
+    <Folder Include="ProjectTasks\Queries\GetTaskList\" />
   </ItemGroup>
 
 </Project>
