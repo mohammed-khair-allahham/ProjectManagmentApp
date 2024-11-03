@@ -1,8 +1,12 @@
 ﻿using ProjectManagmentApp.Application.Common.Interfaces;
+using ProjectManagmentApp.Application.Common.Security;
 using ProjectManagmentApp.Domain.Common;
+using ProjectManagmentApp.Domain.Constants;
 
-namespace ProjectManagmentApp.Application.TodoItems.Commands.DeleteTodoItem;
+namespace ProjectManagmentApp.Application.ProjectTasks.Commands.DeleteTask;
 
+[Authorize(Roles = $"{Roles.Administrator},{Roles.Manager}")]
+[Authorize(Policy = Policies.CanDelete)]
 public record DeleteTaskCommand(int Id) : IRequest;
 
 public class DeleteTaskCommandHandler : IRequestHandler<DeleteTaskCommand>

@@ -6,7 +6,7 @@ using ProjectManagmentApp.Domain.Enums;
 
 namespace ProjectManagmentApp.Application.TodoItems.Commands.UpdateTodoItem;
 
-[Authorize(Roles = $"{Roles.Administrator},{Roles.Manager},{Roles.Employee}")]
+[Authorize]
 [Authorize(Policy = Policies.CanUpdate)]
 public record UpdateTaskCommand(int Id) : IRequest<TaskResponseDto>
 {
