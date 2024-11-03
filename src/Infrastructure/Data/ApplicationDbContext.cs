@@ -11,6 +11,10 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>, IApplica
 {
     public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options) { }
 
+    public DbSet<Project> Projects => Set<Project>();
+
+    public DbSet<ProjectTask> Tasks => Set<ProjectTask>();
+
     public DbSet<TodoList> TodoLists => Set<TodoList>();
 
     public DbSet<TodoItem> TodoItems => Set<TodoItem>();
@@ -19,5 +23,27 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>, IApplica
     {
         base.OnModelCreating(builder);
         builder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
+
+        builder.Entity<Project>(p =>
+        {
+            p.Property(b => b.Name).IsRequired().HasMaxLength(400);
+            p.Property(b => b.Description).IsRequired(false).HasMaxLength(5000);
+            p.Property(b => b.StartDate).IsRequired(false);
+            p.Property(b => b.EndDate).IsRequired(false);
+            p.Property(b => b.OwnedBy).IsRequired().HasMaxLength(36);
+            p.Property(b => b.Budget).IsRequired().HasColumnType("decimal(18,4)");
+            p.Property(b => b.Status).IsRequired();
+        });
+
+        builder.Entity<ProjectTask>(t =>
+        {
+            t.Property(b => b.Name).IsRequired().HasMaxLength(400);
+            t.Property(b => b.Description).IsRequired(false).HasMaxLength(5000);
+            t.Property(b => b.StartDate).IsRequired(false);
+            t.Property(b => b.EndDate).IsRequired(false);
+            t.Property(b => b.AssignedTo).IsRequired(false).HasMaxLength(36);
+            t.Property(b => b.Priority).IsRequired();
+            t.Property(b => b.Status).IsRequired();
+        });
     }
 }

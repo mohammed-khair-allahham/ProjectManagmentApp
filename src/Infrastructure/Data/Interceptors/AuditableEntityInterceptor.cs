@@ -46,7 +46,8 @@ public class AuditableEntityInterceptor : SaveChangesInterceptor
                 {
                     entry.Entity.CreatedBy = _user.Id;
                     entry.Entity.Created = utcNow;
-                } 
+                    entry.Entity.EntityStatus = BaseAuditableEntityStatus.Active;
+                }
                 entry.Entity.LastModifiedBy = _user.Id;
                 entry.Entity.LastModified = utcNow;
             }
