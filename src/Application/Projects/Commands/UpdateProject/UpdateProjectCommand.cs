@@ -1,5 +1,4 @@
-﻿using Microsoft.Extensions.Logging;
-using ProjectManagmentApp.Application.Common.Interfaces;
+﻿using ProjectManagmentApp.Application.Common.Interfaces;
 using ProjectManagmentApp.Application.Common.Security;
 using ProjectManagmentApp.Domain.Constants;
 using ProjectManagmentApp.Domain.Enums;
@@ -8,7 +7,7 @@ namespace ProjectManagmentApp.Application.Projects.Commands.UpdateProject;
 
 [Authorize(Roles = $"{Roles.Administrator},{Roles.Manager}")]
 [Authorize(Policy = Policies.CanUpdate)]
-public record UpdateProjectCommand(int Id) : IRequest
+public record UpdateProjectCommand(int Id) : IRequest<ProjectResponseDto>
 {
     public string? Name { get; init; }
     public string? Description { get; init; }
@@ -19,7 +18,7 @@ public record UpdateProjectCommand(int Id) : IRequest
     public ProjectStatus Status { get; init; }
 }
 
-public class UpdateProjectCommandHandler : IRequestHandler<UpdateProjectCommand>
+public class UpdateProjectCommandHandler : IRequestHandler<UpdateProjectCommand, ProjectResponseDto>
 {
     private readonly IApplicationDbContext _context;
     private readonly IMapper _mapper;
@@ -31,7 +30,7 @@ public class UpdateProjectCommandHandler : IRequestHandler<UpdateProjectCommand>
         _mapper = mapper;
     }
 
-    public async Task Handle(UpdateProjectCommand request, CancellationToken cancellationToken)
+    public async Task<ProjectResponseDto> Handle(UpdateProjectCommand request, CancellationToken cancellationToken)
     {
         var entity = await _context.Projects
             .FindAsync([request.Id], cancellationToken);
@@ -47,5 +46,9 @@ public class UpdateProjectCommandHandler : IRequestHandler<UpdateProjectCommand>
         entity.Status = request.Status;
 
         await _context.SaveChangesAsync(cancellationToken);
+
+        var projectDto = _mapper.Map<ProjectResponseDto>(entity);
+
+        return projectDto;
     }
 }
