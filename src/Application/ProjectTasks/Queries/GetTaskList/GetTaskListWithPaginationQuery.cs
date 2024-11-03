@@ -11,6 +11,9 @@ namespace ProjectManagmentApp.Application.ProjectTasks.Queries.GetTaskList;
 [Authorize(Policy = Policies.CanGet)]
 public record GetTaskListWithPaginationQuery : IRequest<PaginatedList<GetTaskListDto>>
 {
+    // Create an endpoint that returns overdue tasks (tasks whose EndDate is in the past
+    //but are not completed).
+    public bool? OverDue { get; init; }
     public ProjectTaskStatus? Status { get; init; }
     public int PageNumber { get; init; } = 1;
     public int PageSize { get; init; } = 10;
@@ -21,14 +24,17 @@ public class GetTaskListWithPaginationQueryHandler : IRequestHandler<GetTaskList
     private readonly IApplicationDbContext _context;
     private readonly IMapper _mapper;
     private readonly IUser _user;
+    private readonly TimeProvider _time;
 
     public GetTaskListWithPaginationQueryHandler(IApplicationDbContext context,
                                                  IMapper mapper,
-                                                 IUser user)
+                                                 IUser user,
+                                                 TimeProvider time)
     {
         _context = context;
         _mapper = mapper;
         _user = user;
+        _time = time;
     }
     public async Task<PaginatedList<GetTaskListDto>> Handle(GetTaskListWithPaginationQuery request, CancellationToken cancellationToken)
     {
@@ -37,6 +43,11 @@ public class GetTaskListWithPaginationQueryHandler : IRequestHandler<GetTaskList
         if (_user.Role == Roles.Employee)
         {
             query = query.Where(t => t.AssignedTo == _user.Id);
+        }
+
+        if (request.OverDue.HasValue)
+        {
+            query = query.Where(t => t.Created < _time.GetUtcNow());
         }
 
         if (request.Status.HasValue)

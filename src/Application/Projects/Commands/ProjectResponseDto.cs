@@ -2,7 +2,7 @@
 using ProjectManagmentApp.Domain.Entities;
 using ProjectManagmentApp.Domain.Enums;
 
-namespace ProjectManagmentApp.Application.Projects;
+namespace ProjectManagmentApp.Application.Projects.Commands;
 public class ProjectResponseDto : BaseProjectAppDto
 {
     public string? OwnedBy { get; set; }
