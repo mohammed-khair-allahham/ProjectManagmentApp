@@ -1,7 +1,6 @@
 ﻿using ProjectManagmentApp.Application.Common.Interfaces;
-using ProjectManagmentApp.Application.Projects.Commands.UpdateProject;
 
-namespace ProjectManagmentApp.Application.TodoLists.Commands.UpdateTodoList;
+namespace ProjectManagmentApp.Application.Projects.Commands.UpdateProject;
 
 public class UpdateProjectCommandValidator : AbstractValidator<UpdateProjectCommand>
 {

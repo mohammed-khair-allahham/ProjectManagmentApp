@@ -30,7 +30,7 @@ public class GetProjectListQueryHandler : IRequestHandler<GetProjectListWithPagi
     {
         var query = _context.Projects.AsNoTracking();
 
-        return query.OrderByDescending(x => x.Id)
+        return query.OrderBy(x => x.Name)
                     .ProjectTo<GetProjectListDto>(_mapper.ConfigurationProvider)
                     .PaginatedListAsync(request.PageNumber, request.PageSize);
     }

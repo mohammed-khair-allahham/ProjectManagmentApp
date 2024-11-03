@@ -1,7 +1,7 @@
 ﻿using ProjectManagmentApp.Application.Common.Models;
 using ProjectManagmentApp.Domain.Enums;
 
-namespace ProjectManagmentApp.Application.ProjectTasks;
+namespace ProjectManagmentApp.Application.ProjectTasks.Commands;
 public class TaskResponseDto : BaseProjectAppDto
 {
     public string? AssignedTo { get; set; }
