@@ -1,12 +1,13 @@
 ﻿using ProjectManagmentApp.Application.Common.Interfaces;
 
-namespace ProjectManagmentApp.Application.ProjectTasks.Commands.CreateTask;
-public class CreateTaskCommandValidator : AbstractValidator<CreateTaskCommand>
+namespace ProjectManagmentApp.Application.TodoItems.Commands.UpdateTodoItem;
+
+public class UpdateTaskCommandValidator : AbstractValidator<UpdateTaskCommand>
 {
     private readonly IApplicationDbContext _context;
     private readonly IIdentityService _identityService;
 
-    public CreateTaskCommandValidator(IApplicationDbContext context, IIdentityService identityService)
+    public UpdateTaskCommandValidator(IApplicationDbContext context, IIdentityService identityService)
     {
         _context = context;
         _identityService = identityService;
