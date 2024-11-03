@@ -1,12 +1,14 @@
 ﻿using ProjectManagmentApp.Application.Common.Interfaces;
 using ProjectManagmentApp.Application.Common.Mappings;
 using ProjectManagmentApp.Application.Common.Models;
-using ProjectManagmentApp.Domain.Common;
+using ProjectManagmentApp.Application.Common.Security;
+using ProjectManagmentApp.Domain.Constants;
 using ProjectManagmentApp.Domain.Enums;
 
 namespace ProjectManagmentApp.Application.Projects.Queries.GetProjectList;
 
-
+[Authorize(Roles = $"{Roles.Administrator},{Roles.Manager}")]
+[Authorize(Policy = Policies.CanGet)]
 public record GetProjectListWithPaginationQuery() : IRequest<PaginatedList<GetProjectListDto>>
 {
     public ProjectStatus? Status { get; init; }
@@ -29,7 +31,7 @@ public class GetProjectListQueryHandler : IRequestHandler<GetProjectListWithPagi
         _mapper = mapper;
     }
 
-    public Task<PaginatedList<GetProjectListDto>> Handle(GetProjectListWithPaginationQuery request, CancellationToken cancellationToken)
+    public async Task<PaginatedList<GetProjectListDto>> Handle(GetProjectListWithPaginationQuery request, CancellationToken cancellationToken)
     {
         var query = _context.Projects.AsNoTracking();
 
@@ -38,7 +40,7 @@ public class GetProjectListQueryHandler : IRequestHandler<GetProjectListWithPagi
             query = query.Where(p => p.Status == request.Status);
         }
 
-        return query.OrderBy(x => x.Name)
+        return await query.OrderBy(x => x.Name)
                     .ProjectTo<GetProjectListDto>(_mapper.ConfigurationProvider)
                     .PaginatedListAsync(request.PageNumber, request.PageSize);
     }
