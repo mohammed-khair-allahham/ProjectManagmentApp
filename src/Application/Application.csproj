@@ -17,8 +17,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Projects\Commands\DeleteProject\" />
-    <Folder Include="Projects\Commands\UpdateProject\" />
     <Folder Include="Projects\Queries\" />
     <Folder Include="ProjectTasks\Commands\" />
     <Folder Include="ProjectTasks\Queries\" />
