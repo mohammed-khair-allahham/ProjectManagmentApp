@@ -4,6 +4,7 @@ using ProjectManagmentApp.Domain.Entities;
 using ProjectManagmentApp.Infrastructure.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using ProjectManagmentApp.Domain.Common;
 
 namespace ProjectManagmentApp.Infrastructure.Data;
 
@@ -24,26 +25,28 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>, IApplica
         base.OnModelCreating(builder);
         builder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
 
-        builder.Entity<Project>(p =>
+        builder.Entity<Project>(b =>
         {
-            p.Property(b => b.Name).IsRequired().HasMaxLength(400);
-            p.Property(b => b.Description).IsRequired(false).HasMaxLength(5000);
-            p.Property(b => b.StartDate).IsRequired(false);
-            p.Property(b => b.EndDate).IsRequired(false);
-            p.Property(b => b.OwnedBy).IsRequired().HasMaxLength(36);
-            p.Property(b => b.Budget).IsRequired().HasColumnType("decimal(18,4)");
-            p.Property(b => b.Status).IsRequired();
+            b.Property(p => p.Name).IsRequired().HasMaxLength(400);
+            b.Property(p => p.Description).IsRequired(false).HasMaxLength(5000);
+            b.Property(p => p.StartDate).IsRequired(false);
+            b.Property(p => p.EndDate).IsRequired(false);
+            b.Property(p => p.OwnedBy).IsRequired().HasMaxLength(36);
+            b.Property(p => p.Budget).IsRequired().HasColumnType("decimal(18,4)");
+            b.Property(p => p.Status).IsRequired();
+            b.HasQueryFilter(p => p.EntityStatus == BaseAuditableEntityStatus.Active);
         });
 
-        builder.Entity<ProjectTask>(t =>
+        builder.Entity<ProjectTask>(b =>
         {
-            t.Property(b => b.Name).IsRequired().HasMaxLength(400);
-            t.Property(b => b.Description).IsRequired(false).HasMaxLength(5000);
-            t.Property(b => b.StartDate).IsRequired(false);
-            t.Property(b => b.EndDate).IsRequired(false);
-            t.Property(b => b.AssignedTo).IsRequired(false).HasMaxLength(36);
-            t.Property(b => b.Priority).IsRequired();
-            t.Property(b => b.Status).IsRequired();
+            b.Property(t => t.Name).IsRequired().HasMaxLength(400);
+            b.Property(t => t.Description).IsRequired(false).HasMaxLength(5000);
+            b.Property(t => t.StartDate).IsRequired(false);
+            b.Property(t => t.EndDate).IsRequired(false);
+            b.Property(t => t.AssignedTo).IsRequired(false).HasMaxLength(36);
+            b.Property(t => t.Priority).IsRequired();
+            b.Property(t => t.Status).IsRequired();
+            b.HasQueryFilter(t => t.EntityStatus == BaseAuditableEntityStatus.Active);
         });
     }
 }
