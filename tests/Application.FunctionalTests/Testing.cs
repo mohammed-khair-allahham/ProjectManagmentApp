@@ -54,9 +54,9 @@ public partial class Testing
         return await RunAsUserAsync("test@local", "Testing1234!", Array.Empty<string>());
     }
 
-    public static async Task<string> RunAsAdministratorAsync()
+    public static async Task<string> RunAsManagerAsync()
     {
-        return await RunAsUserAsync("administrator@local", "Administrator1234!", new[] { Roles.Administrator });
+        return await RunAsUserAsync("Manager@local", "Manager1234!", new[] { Roles.Manager });
     }
 
     public static async Task<string> RunAsUserAsync(string userName, string password, string[] roles)

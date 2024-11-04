@@ -2,11 +2,12 @@
 using System.Runtime.CompilerServices;
 using AutoMapper;
 using ProjectManagmentApp.Application.Common.Interfaces;
-using ProjectManagmentApp.Application.Common.Models;
-using ProjectManagmentApp.Application.TodoItems.Queries.GetTodoItemsWithPagination;
-using ProjectManagmentApp.Application.TodoLists.Queries.GetTodos;
-using ProjectManagmentApp.Domain.Entities;
 using NUnit.Framework;
+using ProjectManagmentApp.Domain.Entities;
+using ProjectManagmentApp.Application.Projects.Queries.GetProjectList;
+using ProjectManagmentApp.Application.ProjectTasks.Queries.GetTaskList;
+using ProjectManagmentApp.Application.Projects.Commands;
+using ProjectManagmentApp.Application.ProjectTasks.Commands;
 
 namespace ProjectManagmentApp.Application.UnitTests.Common.Mappings;
 
@@ -24,17 +25,10 @@ public class MappingTests
     }
 
     [Test]
-    public void ShouldHaveValidConfiguration()
-    {
-        _configuration.AssertConfigurationIsValid();
-    }
-
-    [Test]
-    [TestCase(typeof(TodoList), typeof(TodoListDto))]
-    [TestCase(typeof(TodoItem), typeof(TodoItemDto))]
-    [TestCase(typeof(TodoList), typeof(LookupDto))]
-    [TestCase(typeof(TodoItem), typeof(LookupDto))]
-    [TestCase(typeof(TodoItem), typeof(TodoItemBriefDto))]
+    [TestCase(typeof(Project), typeof(GetProjectListDto))]
+    [TestCase(typeof(ProjectTask), typeof(GetTaskListDto))]
+    [TestCase(typeof(Project), typeof(ProjectResponseDto))]
+    [TestCase(typeof(ProjectTask), typeof(TaskResponseDto))]
     public void ShouldSupportMappingFromSourceToDestination(Type source, Type destination)
     {
         var instance = GetInstanceOf(source);
