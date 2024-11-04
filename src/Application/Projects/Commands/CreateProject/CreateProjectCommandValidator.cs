@@ -22,6 +22,7 @@ public class CreateProjectCommandValidator : AbstractValidator<CreateProjectComm
 
         RuleFor(p => p.OwnedBy)
            .NotEmpty()
+           .MaximumLength(256)
            .MustAsync(OwnedByExist)
            .WithMessage("'{PropertyName}' must exist.")
                 .WithErrorCode("Exist");

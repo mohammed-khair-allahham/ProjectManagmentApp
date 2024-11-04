@@ -4,8 +4,7 @@ using ProjectManagmentApp.Domain.Constants;
 
 namespace ProjectManagmentApp.Application.Projects.Queries.GetProjectDetails;
 
-[Authorize(Roles = $"{Roles.Administrator},{Roles.Manager}")]
-[Authorize(Policy = Policies.CanGet)]
+[Authorize(Roles = Roles.Manager)]
 public record GetProjectDetailsQuery(int Id) : IRequest<ProjectDetailsDto>
 {
 }
@@ -13,15 +12,12 @@ public record GetProjectDetailsQuery(int Id) : IRequest<ProjectDetailsDto>
 public class GetProjectDetailsQueryHandler : IRequestHandler<GetProjectDetailsQuery, ProjectDetailsDto>
 {
     private readonly IApplicationDbContext _context;
-    private readonly IIdentityService _identityService;
     private readonly IMapper _mapper;
 
     public GetProjectDetailsQueryHandler(IApplicationDbContext context,
-                                         IIdentityService identityService,
                                          IMapper mapper)
     {
         _context = context;
-        _identityService = identityService;
         _mapper = mapper;
     }
     public async Task<ProjectDetailsDto> Handle(GetProjectDetailsQuery request, CancellationToken cancellationToken)
@@ -33,8 +29,6 @@ public class GetProjectDetailsQueryHandler : IRequestHandler<GetProjectDetailsQu
         Guard.Against.NotFound(request.Id, projectEntity);
 
         var projectDto = _mapper.Map<ProjectDetailsDto>(projectEntity);
-        var username = await _identityService.GetUserNameAsync(projectDto.OwnedBy ?? string.Empty);
-        projectDto.OwnedByName = username;
 
         return projectDto;
     }

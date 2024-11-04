@@ -1,8 +1,11 @@
 ﻿using ProjectManagmentApp.Application.Common.Interfaces;
+using ProjectManagmentApp.Application.Common.Security;
 using ProjectManagmentApp.Domain.Common;
+using ProjectManagmentApp.Domain.Constants;
 
 namespace ProjectManagmentApp.Application.Projects.Commands.DeleteProject;
 
+[Authorize(Roles = Roles.Manager)]
 public record DeleteProjectCommand(int Id) : IRequest;
 
 public class DeleteProjectCommandHandler : IRequestHandler<DeleteProjectCommand>

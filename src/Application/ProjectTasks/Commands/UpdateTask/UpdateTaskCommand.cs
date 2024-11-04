@@ -7,7 +7,6 @@ using ProjectManagmentApp.Domain.Enums;
 namespace ProjectManagmentApp.Application.TodoItems.Commands.UpdateTodoItem;
 
 [Authorize]
-[Authorize(Policy = Policies.CanUpdate)]
 public record UpdateTaskCommand(int Id) : IRequest<TaskResponseDto>
 {
     public string? Name { get; init; }
@@ -41,7 +40,7 @@ public class UpdateTaskCommandHandler : IRequestHandler<UpdateTaskCommand, TaskR
         Guard.Against.NotFound(request.Id, entity);
         // Managers can update tasks, while employees can only update tasks
         // assigned to them
-        if (_user.Role == Roles.Employee && entity.AssignedTo != _user.Id)
+        if (_user.Role == Roles.Employee && entity.AssignedTo != _user.Name)
         {
             throw new UnauthorizedAccessException();
         }

@@ -5,8 +5,7 @@ using ProjectManagmentApp.Domain.Constants;
 
 namespace ProjectManagmentApp.Application.ProjectTasks.Commands.DeleteTask;
 
-[Authorize(Roles = $"{Roles.Administrator},{Roles.Manager}")]
-[Authorize(Policy = Policies.CanDelete)]
+[Authorize(Roles = Roles.Manager)]
 public record DeleteTaskCommand(int Id) : IRequest;
 
 public class DeleteTaskCommandHandler : IRequestHandler<DeleteTaskCommand>

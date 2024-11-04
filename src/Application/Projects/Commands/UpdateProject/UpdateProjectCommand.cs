@@ -5,8 +5,7 @@ using ProjectManagmentApp.Domain.Enums;
 
 namespace ProjectManagmentApp.Application.Projects.Commands.UpdateProject;
 
-[Authorize(Roles = $"{Roles.Administrator},{Roles.Manager}")]
-[Authorize(Policy = Policies.CanUpdate)]
+[Authorize(Roles = Roles.Manager)]
 public record UpdateProjectCommand(int Id) : IRequest<ProjectResponseDto>
 {
     public string? Name { get; init; }

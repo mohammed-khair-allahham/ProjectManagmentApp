@@ -8,11 +8,11 @@ using ProjectManagmentApp.Domain.Enums;
 namespace ProjectManagmentApp.Application.ProjectTasks.Queries.GetTaskList;
 
 [Authorize]
-[Authorize(Policy = Policies.CanGet)]
 public record GetTaskListWithPaginationQuery : IRequest<PaginatedList<GetTaskListDto>>
 {
     // Create an endpoint that returns overdue tasks (tasks whose EndDate is in the past
     //but are not completed).
+    public int? ProjectId { get; set; }
     public bool? OverDue { get; init; }
     public ProjectTaskStatus? Status { get; init; }
     public int PageNumber { get; init; } = 1;
@@ -40,9 +40,14 @@ public class GetTaskListWithPaginationQueryHandler : IRequestHandler<GetTaskList
     {
         var query = _context.Tasks.AsNoTracking();
 
+        if (request.ProjectId.HasValue)
+        {
+            query = query.Where(t => t.ProjectId == request.ProjectId);
+        }
+
         if (_user.Role == Roles.Employee)
         {
-            query = query.Where(t => t.AssignedTo == _user.Id);
+            query = query.Where(t => t.AssignedTo == _user.Name);
         }
 
         if (request.OverDue.HasValue)

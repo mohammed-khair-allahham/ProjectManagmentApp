@@ -7,8 +7,7 @@ using ProjectManagmentApp.Domain.Enums;
 
 namespace ProjectManagmentApp.Application.Projects.Queries.GetProjectList;
 
-[Authorize(Roles = $"{Roles.Administrator},{Roles.Manager}")]
-[Authorize(Policy = Policies.CanGet)]
+[Authorize(Roles = Roles.Manager)]
 public record GetProjectListWithPaginationQuery() : IRequest<PaginatedList<GetProjectListDto>>
 {
     public ProjectStatus? Status { get; init; }

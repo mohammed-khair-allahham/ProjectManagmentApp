@@ -22,7 +22,6 @@ public class UpdateTaskCommandValidator : AbstractValidator<UpdateTaskCommand>
             .MaximumLength(5000);
 
         RuleFor(p => p.AssignedTo)
-           .NotEmpty()
            .MustAsync(AssignedToExist)
            .WithMessage("'{PropertyName}' must exist.")
                 .WithErrorCode("Exist");
@@ -35,7 +34,11 @@ public class UpdateTaskCommandValidator : AbstractValidator<UpdateTaskCommand>
     }
 
     public async Task<bool> AssignedToExist(string? assignedTo, CancellationToken cancellationToken)
-        => await _identityService.ExistAsync(assignedTo);
+    {
+        if (assignedTo is null)
+            return true;
+        return await _identityService.ExistAsync(assignedTo);
+    }
 
     public async Task<bool> ProjectExist(int id, CancellationToken cancellationToken)
         => await _context.Projects.AsNoTracking().AnyAsync(p => p.Id == id);

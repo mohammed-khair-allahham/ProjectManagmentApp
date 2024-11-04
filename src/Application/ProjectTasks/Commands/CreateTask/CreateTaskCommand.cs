@@ -6,8 +6,7 @@ using ProjectManagmentApp.Domain.Enums;
 
 namespace ProjectManagmentApp.Application.ProjectTasks.Commands.CreateTask;
 
-[Authorize(Roles = $"{Roles.Administrator},{Roles.Manager}")]
-[Authorize(Policy = Policies.CanCreate)]
+[Authorize(Roles = Roles.Manager)]
 public record CreateTaskCommand : IRequest<TaskResponseDto>
 {
     public string? Name { get; init; }

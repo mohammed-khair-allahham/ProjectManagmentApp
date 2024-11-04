@@ -21,7 +21,7 @@ public class CreateTaskCommandValidator : AbstractValidator<CreateTaskCommand>
             .MaximumLength(5000);
 
         RuleFor(p => p.AssignedTo)
-           .NotEmpty()
+           .MaximumLength(256)
            .MustAsync(AssignedToExist)
            .WithMessage("'{PropertyName}' must exist.")
                 .WithErrorCode("Exist");
@@ -42,7 +42,11 @@ public class CreateTaskCommandValidator : AbstractValidator<CreateTaskCommand>
     }
 
     public async Task<bool> AssignedToExist(string? assignedTo, CancellationToken cancellationToken)
-        => await _identityService.ExistAsync(assignedTo);
+    {
+        if (assignedTo is null)
+            return true;
+        return await _identityService.ExistAsync(assignedTo);
+    }
 
     public async Task<bool> ProjectExist(int id, CancellationToken cancellationToken)
         => await _context.Projects.AsNoTracking().AnyAsync(p => p.Id == id);
@@ -52,7 +56,7 @@ public class CreateTaskCommandValidator : AbstractValidator<CreateTaskCommand>
         // Fetch project from the database
         var project = await _context.Projects.AsNoTracking()
                                              .SingleOrDefaultAsync(p => p.Id == command.ProjectId, cancellationToken);
-        
+
         Guard.Against.Null(project);
 
         // Check StartDate constraints

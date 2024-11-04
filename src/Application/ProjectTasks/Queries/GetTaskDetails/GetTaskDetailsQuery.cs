@@ -5,7 +5,6 @@ using ProjectManagmentApp.Domain.Constants;
 namespace ProjectManagmentApp.Application.ProjectTasks.Queries.GetTaskDetails;
 
 [Authorize]
-[Authorize(Policy = Policies.CanGet)]
 public record GetTaskDetailsQuery(int Id) : IRequest<TaskDetailsDto>
 {
 }
@@ -38,7 +37,7 @@ public class GetTaskDetailsQueryHandler : IRequestHandler<GetTaskDetailsQuery, T
 
         // Managers can update tasks, while employees can only update tasks
         // assigned to them
-        if (_user.Role == Roles.Employee && taskEntity.AssignedTo != _user.Id)
+        if (_user.Role == Roles.Employee && taskEntity.AssignedTo != _user.Name)
         {
             throw new UnauthorizedAccessException();
         }

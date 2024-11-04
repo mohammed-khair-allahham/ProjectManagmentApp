@@ -13,22 +13,18 @@ public class ProjectTask : ProjectAppBaseEntity
     public int ProjectId { get; set; }
     public Project Project { get; set; } = null!;
 
-    // Private
-    private bool _completed;
-
     // Events
     [NotMapped]
     public bool Completed
     {
-        get => _completed;
+        get => Status == ProjectTaskStatus.Completed;
         set
         {
-            if (value && !_completed)
+            if (value && Status != ProjectTaskStatus.Completed)
             {
+                Status = ProjectTaskStatus.Completed;
                 AddDomainEvent(new ProjectTaskCompletedEvent(this));
             }
-
-            _completed = value;
         }
     }
 }
